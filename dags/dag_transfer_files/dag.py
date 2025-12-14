@@ -38,6 +38,6 @@ batch_config = generate_batches_from_directory(
 with open(os.path.join(current_path, 'config.yaml'), 'r') as infile:
     template = Template(infile.read())
 
-rendered_config = template.render(config=batch_config)
+rendered_config = template.render(target_conn="target_sftp_conn", config=batch_config)
 configs = load(rendered_config, Loader=Loader)
 dag = DagBuilder(configs).build()

@@ -29,7 +29,7 @@ DAG:
                 source_type: "{{ config.source_type }}"
                 target_type: "{{ config.target_type }}"
                 source_conn_id: "{{ config.source_conn_id }}"
-                target_conn_id: "target_sftp_conn"
+                target_conn_id: "{{ target_conn }}"
                 source_files: {{ batch.files }}
                 source_path: "{{ config.path }}"
                 target_path: "{{ config.path }}"
