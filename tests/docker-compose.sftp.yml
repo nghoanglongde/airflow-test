@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  sftp-source:
+    image: atmoz/sftp
+    platform: linux/amd64
+    container_name: sftp-source
+    ports:
+      - "2222:22"
+    volumes:
+      - ./sftp-source-data:/home/sftpuser/data
+    command: sftpuser:password:1001
+    networks:
+      - airflow-network
+
+  sftp-target:
+    image: atmoz/sftp
+    platform: linux/amd64
+    container_name: sftp-target
+    ports:
+      - "2223:22"
+    volumes:
+      - ./sftp-target-data:/home/sftpuser/data
+    command: sftpuser:password:1001
+    networks:
+      - airflow-network
+
+networks:
+  airflow-network:
+    external: true
+    name: airflow-test_default
