@@ -23,3 +23,7 @@ class BaseStorageAdapter(ABC):
     @abstractmethod
     def rename_file(self, old_path, new_path):
         pass
+
+    @abstractmethod
+    def is_directory(self, path):
+        pass

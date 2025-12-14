@@ -7,6 +7,7 @@
 from adapters.storage_adapter.base_adapter import BaseStorageAdapter
 from airflow.providers.sftp.hooks.sftp import SFTPHook
 import logging
+import stat
 
 
 class SFTPStorageAdapter(BaseStorageAdapter):
@@ -77,6 +78,14 @@ class SFTPStorageAdapter(BaseStorageAdapter):
         except FileNotFoundError:
             pass
         sftp.rename(old_path, new_path)
+
+    def is_directory(self, path):
+        sftp = self.hook.get_conn()
+        try:
+            file_stat = sftp.stat(path)
+            return stat.S_ISDIR(file_stat.st_mode)
+        except Exception as e:
+            raise
 
 
 # if __name__ == "__main__":
