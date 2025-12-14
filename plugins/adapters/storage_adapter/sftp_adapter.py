@@ -48,8 +48,19 @@ class SFTPStorageAdapter(BaseStorageAdapter):
         try:
             sftp.stat(directory)
         except FileNotFoundError:
-            sftp.mkdir(directory)
-            self.logger.info(f"Created directory: {directory}")
+            # we need to recursively create parent directories because SFTP has no mkdir -p
+            parent_dir = '/'.join(directory.split('/')[:-1])
+            if parent_dir and parent_dir != '/':
+                self._create_directory_if_not_exists(sftp, parent_dir)
+
+            try:
+                sftp.mkdir(directory)
+                self.logger.info(f"Created directory: {directory}")
+            except IOError:
+                try:
+                    sftp.stat(directory)
+                except FileNotFoundError:
+                    raise
 
     def delete_file(self, file_path):
         sftp = self.hook.get_conn()
@@ -57,6 +68,15 @@ class SFTPStorageAdapter(BaseStorageAdapter):
             sftp.remove(file_path)
         except FileNotFoundError:
             pass
+    
+    def rename_file(self, old_path: str, new_path: str) -> None:
+        sftp = self.hook.get_conn()
+
+        try:
+            sftp.remove(new_path)
+        except FileNotFoundError:
+            pass
+        sftp.rename(old_path, new_path)
 
 
 # if __name__ == "__main__":
