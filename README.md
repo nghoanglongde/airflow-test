@@ -223,10 +223,31 @@ Maybe this could be the final solution I am thinking, what if we group number of
 ## Finalize
 So I would come up with the solution 3 and follow the **What I will do** section that I have mentioned above
 
----
 
 ## Setup and Running
 
-The instruction to start Airflow with Docker: **[Setup Guide](./documents/SETUP.md)**
+1. Clone this repo
 
-So I have use claude for generating the SFTP server for testing, which can be configured at: **[Test](./tests/README.md)**
+2. So I have use claude for generating the SFTP server for testing, follow the README for starting the SFTP server: **[Test](./tests/README.md)**
+
+3. Run Airflow with Docker: **[Setup Guide](./documents/SETUP.md)**
+
+4. Setup connections in Airflow UI (`Admin` → `Connections`):
+
+   **Source SFTP Connection:**
+   - Connection Id: `source_sftp_conn`
+   - Connection Type: `SFTP`
+   - Host: `sftp-source`
+   - Username: `sftpuser`
+   - Password: `password`
+   - Port: `22`
+
+   **Target SFTP Connection:**
+   - Connection Id: `target_sftp_conn`
+   - Connection Type: `SFTP`
+   - Host: `sftp-target`
+   - Username: `sftpuser`
+   - Password: `password`
+   - Port: `22`
+
+5. Trigger DAG: **dag_transfer_files**
