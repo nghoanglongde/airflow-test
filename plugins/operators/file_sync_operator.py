@@ -45,6 +45,12 @@ class FileSyncOperator(BaseOperator):
             'total_bytes': 0
         }
 
+        # handle empty file list
+        if not self.source_files:
+            self.logger.info("No files to sync in this batch")
+            self._clear_checkpoint(context)
+            return stats
+
         for file_name in self.source_files:
             try:
                 # check checkpoint => we skip if already synced

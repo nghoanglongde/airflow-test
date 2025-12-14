@@ -20,7 +20,7 @@ current_path = os.path.dirname(
 
 batch_config = generate_batches_from_directory(
     conn_id='source_sftp_conn',
-    directory_path=f"/data/source/2025-12-13",
+    directory_path=f"/data/source/2025-12-11",
     num_batches=3
 )
 
