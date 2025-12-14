@@ -228,3 +228,5 @@ So I would come up with the solution 3 and follow the **What I will do** section
 ## Setup and Running
 
 The instruction to start Airflow with Docker: **[Setup Guide](./documents/SETUP.md)**
+
+So I have use claude for generating the SFTP server for testing, which can be configured at: **[Test](./tests/README.md)**
