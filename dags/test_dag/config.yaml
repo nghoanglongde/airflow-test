@@ -1,0 +1,23 @@
+DAG:
+    dag_id: test_dag_generator
+    args:
+        description: this is a pipeline for testing dag generator
+        max_active_runs: 1
+        schedule_interval: !!python/none
+        catchup: !!bool True
+        default_args:
+            depends_on_past: !!bool True
+            start_date: !!python/object/apply:datetime.datetime [2025, 12, 10]
+            email_on_failure: !!bool False
+            email_on_retry: !!bool False
+            retries: 1
+            retry_delay: !!python/object/new:datetime.timedelta
+              kwds: {minutes: 1}
+            sla: !!python/object/new:datetime.timedelta
+              kwds: {hours: 1}
+            execution_timeout: !!python/object/new:datetime.timedelta
+              kwds: {hours: 2}
+    tasks:
+        start_sync:
+            operator: !!python/name:airflow.operators.dummy.DummyOperator
+            upstream: []
