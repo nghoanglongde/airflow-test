@@ -19,3 +19,7 @@ class BaseStorageAdapter(ABC):
     @abstractmethod
     def delete_file(self, file_path):
         pass
+
+    @abstractmethod
+    def rename_file(self, old_path, new_path):
+        pass
