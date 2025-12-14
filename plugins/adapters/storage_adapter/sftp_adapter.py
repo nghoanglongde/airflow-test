@@ -1,7 +1,5 @@
 # import sys
 # from pathlib import Path
-
-# # Add plugins directory to Python path for standalone execution
 # plugins_dir = Path(__file__).parent.parent.parent
 # sys.path.insert(0, str(plugins_dir))
 
