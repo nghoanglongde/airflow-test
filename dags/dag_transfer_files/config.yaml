@@ -3,7 +3,7 @@ DAG:
     args:
         description: this is a pipeline for transfer files
         max_active_runs: 1
-        schedule_interval: !!python/none
+        schedule_interval: 5 0 * * *
         catchup: !!bool True
         default_args:
             depends_on_past: !!bool True
@@ -22,18 +22,21 @@ DAG:
             operator: !!python/name:airflow.operators.dummy.DummyOperator
             upstream: []
 
-        {% for batch in config.batches %}
-        sync_batch_{{ batch.batch_id }}:
+        {% for batch_id in range(config.num_batches) %}
+        sync_batch_{{ batch_id }}:
             operator: !!python/name:operators.file_sync_operator.FileSyncOperator
             args:
                 source_type: "{{ config.source_type }}"
                 target_type: "{{ config.target_type }}"
                 source_conn_id: "{{ config.source_conn_id }}"
-                target_conn_id: "{{ target_conn }}"
-                source_files: {{ batch.files }}
-                source_path: "{{ config.path }}"
-                target_path: "{{ config.path }}"
+                target_conn_id: "{{ config.target_conn_id }}"
+                source_path: "{{ config.source_path }}"
+                modulo_id: {{ batch_id }}
+                num_batches: {{ config.num_batches }}
                 chunk_size: {{ config.chunk_size }}
+                {% if config.get('transformation_func') %}
+                transformation_func: !!python/name:{{ config.transformation_func }}
+                {% endif %}
             upstream:
                 - start_sync
         {% endfor %}
@@ -41,7 +44,7 @@ DAG:
         end_sync:
             operator: !!python/name:airflow.operators.dummy.DummyOperator
             upstream: [
-                {%- for batch in config.batches -%}
-                sync_batch_{{ batch.batch_id }}{{ "," if not loop.last else "" }}
+                {%- for batch_id in range(config.num_batches) -%}
+                sync_batch_{{ batch_id }}{{ "," if not loop.last else "" }}
                 {%- endfor -%}
             ]

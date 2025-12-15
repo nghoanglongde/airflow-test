@@ -3,7 +3,6 @@ from jinja2 import Template
 from yaml import load, Loader
 import os, inspect
 from dag_builder import DagBuilder
-from dag_transfer_files.batch_generator import generate_batches_from_directory, generate_batches_from_file
 from datetime import datetime
 
 # script directory
@@ -15,23 +14,45 @@ current_path = os.path.dirname(
 	)
 )
 
-# execution_date = datetime.now().strftime('%Y-%m-%d')
+# config for directory sync testing
+# config = {
+#     'source_type': 'sftp',
+#     'target_type': 'sftp',
+#     'source_conn_id': 'source_sftp_conn',
+#     'target_conn_id': 'target_sftp_conn',
+#     'source_path': "/data/source/2025-12-12",
+#     'num_batches': 3,
+#     'chunk_size': 10 * 1024 * 1024,
+#	  'transformation_func': 'dag_transfer_files.transformation.transformations.timestamp_and_uppercase_transform'
+# }
 
+# config for single file sync testing
+# config = {
+#     'source_type': 'sftp',
+#     'target_type': 'sftp',
+#     'source_conn_id': 'source_sftp_conn',
+#     'target_conn_id': 'target_sftp_conn',
+#     'source_path': f"/data/source/2025-12-12/file_001.txt",
+#     'num_batches': 3,
+#     'chunk_size': 10 * 1024 * 1024,
+#     'transformation_func': 'dag_transfer_files.transformation.transformations.timestamp_and_uppercase_transform'
+# }
 
-batch_config = generate_batches_from_directory(
-    conn_id='source_sftp_conn',
-    directory_path=f"/data/source/2025-12-11",
-    num_batches=3
-)
-
-# batch_config = generate_batches_from_file(
-#     conn_id='source_sftp_conn',
-#     file_path=f"/data/source/2025-12-11/file_001.txt"
-# )
+# config for directory sync daily
+config = {
+    'source_type': 'sftp',
+    'target_type': 'sftp',
+    'source_conn_id': 'source_sftp_conn',
+    'target_conn_id': 'target_sftp_conn',
+    'source_path': "/data/source/{{macros.caketest.local_ds(ts)}}",
+    'num_batches': 3,
+    'chunk_size': 10 * 1024 * 1024,
+    'transformation_func': 'dag_transfer_files.transformation.transformations.timestamp_and_uppercase_transform'
+}
 
 with open(os.path.join(current_path, 'config.yaml'), 'r') as infile:
     template = Template(infile.read())
 
-rendered_config = template.render(target_conn="target_sftp_conn", config=batch_config)
+rendered_config = template.render(config=config)
 configs = load(rendered_config, Loader=Loader)
 dag = DagBuilder(configs).build()
