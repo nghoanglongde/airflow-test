@@ -251,3 +251,11 @@ So I would come up with the solution 3 and follow the **What I will do** section
    - Port: `22`
 
 5. Trigger DAG: **dag_transfer_files**
+
+## What I have done so far
+1. Airflow install with docker
+2. Test generate with claude
+3. Implement SyncFileOperator which can be easily customize, extend, error handling
+4. Group batch files processing with modulo mechanism
+5. DAG run daily for pulling files from source to target
+6. Simple chain transformation added
