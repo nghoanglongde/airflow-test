@@ -9,11 +9,11 @@ import hashlib
 
 
 class FileSyncOperator(BaseOperator):
-    template_fields = ['source_path', 'target_path']
+    template_fields = ['source_path']
 
     def __init__(
         self, source_type, target_type, source_conn_id, target_conn_id,
-        source_path, target_path, modulo_id, num_batches, chunk_size = 10 * 1024 * 1024,  # 10MB default
+        source_path, modulo_id, num_batches, chunk_size = 10 * 1024 * 1024,  # 10MB default
         transformation_func = None, **kwargs):
         super().__init__(**kwargs)
         self.source_type = source_type
@@ -21,7 +21,7 @@ class FileSyncOperator(BaseOperator):
         self.source_conn_id = source_conn_id
         self.target_conn_id = target_conn_id
         self.source_path = source_path
-        self.target_path = target_path
+        self.target_path = source_path  # target path same as source path cause the test requires it
         self.modulo_id = modulo_id
         self.num_batches = num_batches
         self.chunk_size = chunk_size

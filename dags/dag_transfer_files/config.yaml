@@ -31,7 +31,6 @@ DAG:
                 source_conn_id: "{{ config.source_conn_id }}"
                 target_conn_id: "{{ config.target_conn_id }}"
                 source_path: "{{ config.source_path }}"
-                target_path: "{{ config.target_path }}"
                 modulo_id: {{ batch_id }}
                 num_batches: {{ config.num_batches }}
                 chunk_size: {{ config.chunk_size }}

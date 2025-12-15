@@ -21,7 +21,6 @@ current_path = os.path.dirname(
 #     'source_conn_id': 'source_sftp_conn',
 #     'target_conn_id': 'target_sftp_conn',
 #     'source_path': "/data/source/2025-12-12",
-#     'target_path': "/data/source/2025-12-12",
 #     'num_batches': 3,
 #     'chunk_size': 10 * 1024 * 1024
 # }
@@ -33,7 +32,6 @@ current_path = os.path.dirname(
 #     'source_conn_id': 'source_sftp_conn',
 #     'target_conn_id': 'target_sftp_conn',
 #     'source_path': f"/data/source/2025-12-12/file_001.txt",
-#     'target_path': f"/data/source/2025-12-12",
 #     'num_batches': 3,
 #     'chunk_size': 10 * 1024 * 1024
 # }
@@ -45,7 +43,6 @@ config = {
     'source_conn_id': 'source_sftp_conn',
     'target_conn_id': 'target_sftp_conn',
     'source_path': "/data/source/{{macros.caketest.local_ds(ts)}}",
-    'target_path': "/data/source/{{macros.caketest.local_ds(ts)}}",
     'num_batches': 3,
     'chunk_size': 10 * 1024 * 1024
 }
