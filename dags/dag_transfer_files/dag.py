@@ -22,7 +22,8 @@ current_path = os.path.dirname(
 #     'target_conn_id': 'target_sftp_conn',
 #     'source_path': "/data/source/2025-12-12",
 #     'num_batches': 3,
-#     'chunk_size': 10 * 1024 * 1024
+#     'chunk_size': 10 * 1024 * 1024,
+#	  'transformation_func': 'dag_transfer_files.transformation.transformations.timestamp_and_uppercase_transform'
 # }
 
 # config for single file sync testing
@@ -33,7 +34,8 @@ current_path = os.path.dirname(
 #     'target_conn_id': 'target_sftp_conn',
 #     'source_path': f"/data/source/2025-12-12/file_001.txt",
 #     'num_batches': 3,
-#     'chunk_size': 10 * 1024 * 1024
+#     'chunk_size': 10 * 1024 * 1024,
+#     'transformation_func': 'dag_transfer_files.transformation.transformations.timestamp_and_uppercase_transform'
 # }
 
 # config for directory sync daily
@@ -44,7 +46,8 @@ config = {
     'target_conn_id': 'target_sftp_conn',
     'source_path': "/data/source/{{macros.caketest.local_ds(ts)}}",
     'num_batches': 3,
-    'chunk_size': 10 * 1024 * 1024
+    'chunk_size': 10 * 1024 * 1024,
+    'transformation_func': 'dag_transfer_files.transformation.transformations.timestamp_and_uppercase_transform'
 }
 
 with open(os.path.join(current_path, 'config.yaml'), 'r') as infile:

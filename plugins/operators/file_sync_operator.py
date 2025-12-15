@@ -65,7 +65,7 @@ class FileSyncOperator(BaseOperator):
                     continue
 
                 source_file = f"{actual_source_path}/{file_name}"
-                target_file = f"{self.target_path}/{file_name}"
+                target_file = f"{actual_source_path}/{file_name}"
                 temp_file = f"{target_file}.tmp"
 
                 bytes_transferred = self._transfer_file(

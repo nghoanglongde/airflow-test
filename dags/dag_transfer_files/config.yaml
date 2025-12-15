@@ -34,6 +34,9 @@ DAG:
                 modulo_id: {{ batch_id }}
                 num_batches: {{ config.num_batches }}
                 chunk_size: {{ config.chunk_size }}
+                {% if config.get('transformation_func') %}
+                transformation_func: !!python/name:{{ config.transformation_func }}
+                {% endif %}
             upstream:
                 - start_sync
         {% endfor %}
